@@ -31,7 +31,6 @@ public class Program {
                 System.out.println("4 ------------- Projeto");
                 System.out.println("5 ----------- Atividade");
                 System.out.println("6 ---------------- Ação");
-                System.out.println("7 -------------- Voltar");
-                System.out.println("8 ---------------- Sair");
+                System.out.println("7 ---------------- Sair");
     }
 }
