@@ -71,7 +71,7 @@ public class Main {
             senha = sc.next();
             if (adm.login(login, senha) == true) {
                 int opcmenuInicial = 0;
-                while (opcmenuInicial != 3) {  // Loop externo com 3 opções
+                while (opcmenuInicial != 4) {  // Loop externo com 3 opções
                     program.menuInicial();
                     opcmenuInicial = sc.nextInt();
 
@@ -79,22 +79,37 @@ public class Main {
                         case 1 -> {
                             System.out.println("****PROJETOS****");
                             for (int i = 0; i != empresa.getLista_projetos().size(); i++) {
-                                System.out.println("Projeto #"+(i+1)+
-                                        "\nNome: " + projeto.getNomeProjeto()+
-                                        "\nPorcentagem: " + projeto.getPorcentagemProjeto()+
-                                        "\nDuração: "+ projeto.calcularDuracao() +" Dias");
+                                System.out.println("Projeto #" + (i + 1)
+                                        + "\nNome: " + projeto.getNomeProjeto());
+                                       try{
+                                            System.out.println("Porcentagem: " + projeto.getPorcentagemProjeto());
+                                        }
+                                        catch(java.lang.ArithmeticException e){
+                                            System.out.println("Porcentagem: 0");
+                                        }
+                                        System.out.println("\nDuração: " + projeto.calcularDuracao() + " Dias");
                             }
                             System.out.println("***ATIVIDADES***");
                             for (int i = 0; i != projeto.getLista_atividades().size(); i++) {
-                                System.out.println("Atividade #"+(i+1)+
-                                        "\nNome: " + atividade.getNomeAtividade()+
-                                        "\nPorcentagem: "+ atividade.definirPorcentagem());
+                                System.out.println("Atividade #" + (i + 1)
+                                        + "\nNome: " + atividade.getNomeAtividade());
+                                        try{
+                                            System.out.println("\nPorcentagem: " + atividade.getPorcentagemAtividade());
+                                        }
+                                        catch(java.lang.ArithmeticException e){
+                                            System.out.println("\nPorcentagem: 0");
+                                        }
                             }
                             System.out.println("*****AÇÕES*****");
-                            for (int i = 0; i != atividade.getLista_acoes().size(); i++) {
-                                System.out.println("Ação #"+(i+1)+
-                                        "\nNome: "+acao.getNomeAcao()+
-                                        "\nPorcentagem: "+acao.getPorcentagemAcao());
+                            for (int i = 0; i < atividade.getLista_acoes().size(); i++) {
+                                System.out.println("Ação #" + (i + 1)
+                                        + "\nNome: " + acao.getNomeAcao());
+                                        try{
+                                            System.out.println("\nPorcentagem: " + acao.getPorcentagemAcao());
+                                        }
+                                        catch(java.lang.ArithmeticException e){
+                                            System.out.println("\nPorcentagem: 0");
+                                        }
                             }
                             break;
                         }
@@ -255,7 +270,182 @@ public class Main {
                             break;
                         }
                         case 3 -> {
-                            // Opção 3
+                            int opcEditar = 0;
+                            while (opcEditar != 7) {
+                                program.menuCadastro();
+                                opcEditar = sc.nextInt();
+                                switch (opcEditar) {
+                                    case 1 -> {
+                                        System.out.println("!!!EDIÇÃO DE EMPRESA!!!");
+                                        for (int i = 0; i != listaEmpresas.size(); i++) {
+                                            System.out.println((i + 1) + "ª Empresa: " + empresa.getNomeEmpresa());
+                                        }
+                                        System.out.println("Informe o numero da empresa: ");
+                                        int numeroEmpresa = sc.nextInt();
+                                        empresa = listaEmpresas.get(numeroEmpresa - 1);
+                                        System.out.println("Informe o que você deseja alterar:");
+                                        System.out.println("1 --------------------------- Nome");
+                                        System.out.println("2 --------------------------- CNPJ");
+                                        System.out.println("3 --------------------------- Sair");
+                                        int numeroEditarEmpresa = sc.nextInt();
+                                        if (numeroEditarEmpresa == 1) {
+                                            System.out.println("Insira o novo nome: ");
+                                            empresa.setNomeEmpresa(sc.next());
+                                            System.out.println("Salvo com Sucesso!!!");
+                                        }
+                                        if (numeroEditarEmpresa == 2) {
+                                            cnpj = sc.next();
+                                            while (empresa.validarCNPJ(cnpj) != true) {
+                                                System.out.println("CNPJ inválido, insira um cnpj válido: ");
+                                                cnpj = sc.next();
+                                                empresa = new Empresa(nomeEmpresa, cnpj);
+                                            }
+                                            if (empresa.validarCNPJ(cnpj) == true) {
+                                                empresa.setCnpj(cnpj);
+                                                System.out.println("Salvo com Sucesso");
+                                            }
+                                        }
+                                        break;
+                                    }
+                                    case 2 -> {
+                                        System.out.println("!!!EDIÇÃO DE DEPARTAMENTO!!!");
+                                        for (int i = 0; i != empresa.getLista_departamentos().size(); i++) {
+                                            System.out.println((i + 1) + "º Departamento: " + departamento.getNomeDepartamento());
+                                        }
+                                        System.out.println("Informe o número do departamento: ");
+                                        int numeroDepartamento = sc.nextInt();
+                                        departamento = empresa.getLista_departamentos().get(numeroDepartamento);
+                                        System.out.println("Informe o que você deseja alterar");
+                                        System.out.println("1 -------------------------- Nome");
+                                        System.out.println("2 ---------------------------- ID");
+                                        System.out.println("3 -------------------------- Sair");
+                                        id_departamento = sc.nextInt();
+                                        System.out.println("Informe a qual empresa esse departamento pertecence: (Insira o número da empresa)");
+                                        for (int i = 0; i != listaEmpresas.size(); i++) {
+                                            System.out.println((i + 1) + "ª Empresa: " + empresa.getNomeEmpresa());
+                                        }
+                                        int numeroEmpresa = sc.nextInt();
+                                        empresa = listaEmpresas.get(numeroEmpresa - 1);
+                                        departamento = new Departamento(nomeDepartamento, id_departamento, empresa);
+                                        empresa.addLista_departamentos(departamento);
+                                        System.out.println("Departamento cadastrado com sucesso !!!");
+                                        break;
+                                    }
+                                    case 3 -> {
+                                        System.out.println("!!!CADASTRO DE FUNCIONÁRIO!!!");
+                                        System.out.println("Informe o nome do funcionário: ");
+                                        nomeFuncionario = sc.next();
+                                        System.out.println("Informe o CPF do funcionário: ");
+                                        cpf = sc.next();
+                                        System.out.println("Crie um Login para o funcionário: ");
+                                        usuarioFuncionario = sc.next();
+                                        System.out.println("Crie uma senha para o funcionário: ");
+                                        senhaFuncionario = sc.next();
+                                        System.out.println("Informe o departamento de qual este funcionário faz parte: (Insira o número do departamento)");
+                                        for (int i = 0; i != empresa.getLista_departamentos().size(); i++) {
+                                            System.out.println((i + 1) + "º Departamento: " + departamento.getNomeDepartamento());
+                                        }
+                                        int numeroDepartamento = sc.nextInt();
+                                        departamento = empresa.getLista_departamentos().get(numeroDepartamento - 1);
+                                        System.out.println("Informe a classificação do funcionario: ");
+                                        System.out.println("1 - Administrador");
+                                        System.out.println("2 - Líder");
+                                        System.out.println("3 - Funcionário");
+                                        int tipofuncionario = sc.nextInt();
+                                        if (tipofuncionario == 1) {
+                                            classificacaoFuncionario = ClassificacaoFuncionario.ADMINISTRADOR;
+                                        }
+                                        if (tipofuncionario == 2) {
+                                            classificacaoFuncionario = ClassificacaoFuncionario.LIDER;
+                                        }
+                                        if (tipofuncionario == 3) {
+                                            classificacaoFuncionario = ClassificacaoFuncionario.FUNCIONARIO;
+                                        }
+                                        Funcionario funcionario = new Funcionario(nomeFuncionario, cpf, usuarioFuncionario, senhaFuncionario, departamento, classificacaoFuncionario);
+                                        departamento.addLista_funcionarios(funcionario);
+                                        System.out.println("Funcionário cadastrado com sucesso !!!");
+                                        break;
+                                    }
+                                    case 4 -> {
+                                        System.out.println("!!!CADASTRO DE PROJETO!!!");
+                                        System.out.println("Informe o nome do projeto: ");
+                                        nomeProjeto = sc.next();
+                                        System.out.println("Adicione uma descrição ao projeto: ");
+                                        descricaoProjeto = sc.next();
+                                        System.out.println("Adicione uma data de início ao projeto: (dd/mm/aaaa)");
+                                        dataInicioProjeto = sdf.parse(sc.next());
+                                        System.out.println("Adicione uma data de fim ao projeto: (dd/mm/aaaa)");
+                                        dataFimProjeto = sdf.parse(sc.next());
+                                        System.out.println("Informe a qual Empresa esse projeto pertence: ");
+                                        for (int i = 0; i != listaEmpresas.size(); i++) {
+                                            System.out.println((i + 1) + "ª Empresa: " + empresa.getNomeEmpresa());
+                                        }
+                                        int numeroEmpresa = sc.nextInt();
+                                        empresa = listaEmpresas.get(numeroEmpresa - 1);
+                                        porcentagemProjeto = 0;
+                                        projeto = new Projeto(nomeProjeto, descricaoProjeto, porcentagemProjeto, dataInicioProjeto, dataFimProjeto, empresa);
+                                        empresa.addLista_projetos(projeto);
+                                        System.out.println("Projeto cadastrado com sucesso !!!");
+                                        break;
+                                    }
+                                    case 5 -> {
+                                        System.out.println("!!!CADASTRO DE ATIVIDADE!!!");
+                                        System.out.println("Informe nome da atividade: ");
+                                        nomeAtividade = sc.next();
+                                        System.out.println("Adicione uma descrição à atividade: ");
+                                        descricaoAtividade = sc.next();
+                                        System.out.println("Adicione uma data de início à atividade: (dd/mm/aaaa)");
+                                        dataInicioAtividade = sdf.parse(sc.next());
+                                        System.out.println("Adicione uma data de fim à atividade: (dd/mm/aaaa)");
+                                        dataFimAtividade = sdf.parse(sc.next());
+                                        porcentagemAtividade = 0;
+                                        System.out.println("Informe a qual projeto a atividade pertence: ");
+                                        for (int i = 0; i != empresa.getLista_projetos().size(); i++) {
+                                            System.out.println((i + 1) + "º Projeto: " + projeto.getNomeProjeto());
+                                        }
+                                        int numeroProjeto = sc.nextInt();
+                                        projeto = empresa.getLista_projetos().get(numeroProjeto - 1);
+                                        atividade = new Atividade(nomeAtividade, descricaoAtividade, dataInicioAtividade, dataFimAtividade, porcentagemAtividade, projeto);
+                                        projeto.addLista_atividades(atividade);
+                                        System.out.println("Atividade cadastrada com sucesso");
+                                        break;
+                                    }
+                                    case 6 -> {
+                                        System.out.println("!!!CADASTRO DE AÇÃO!!!");
+                                        System.out.println("Informe o nome da ação: ");
+                                        nomeAcao = sc.next();
+                                        System.out.println("Adicione uma data de início à ação: (dd/mm/aaaa)");
+                                        dataInicioAcao = sdf.parse(sc.next());
+                                        System.out.println("Adicione uma data de fim à ação: (dd/mm/aaaa)");
+                                        dataFimAcao = sdf.parse(sc.next());
+                                        System.out.println("Adicione uma descrição à ação: ");
+                                        descricaoAcao = sc.next();
+                                        System.out.println("Informe o nome do funcionário responsável pela ação: ");
+                                        for (int i = 0; i != departamento.getLista_funcionarios().size(); i++) {
+                                            System.out.println((i + 1) + "º Funcionário " + adm.getNomeFuncionario());
+                                        }
+                                        int numeroFuncionario = sc.nextInt();
+                                        Funcionario funcionario = departamento.getLista_funcionarios().get(numeroFuncionario - 1);
+                                        System.out.println("Informe a atividade à qual a ação faz parte: ");
+                                        for (int i = 0; i != projeto.getLista_atividades().size(); i++) {
+                                            System.out.println((i + 1) + "ª Atividade " + atividade.getNomeAtividade());
+                                        }
+                                        int numeroAtividade = sc.nextInt();
+                                        atividade = projeto.getLista_atividades().get(numeroAtividade - 1);
+                                        acao = new Acao(nomeAcao, dataInicioAcao, dataFimAcao, descricaoAcao, porcentagemAcao, funcionario, atividade);
+                                        break;
+                                    }
+                                    case 7 -> {
+                                        break;
+                                    }
+                                    default -> {
+                                        System.out.println("Opção inválida. Tente novamente.");
+                                    }
+                                }
+                            }
+                            break;
+                        }
+                        case 4 -> {
                             System.out.println("!!!FIM DO PROGRAMA!!!");
                             break;
                         }
