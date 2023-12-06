@@ -13,7 +13,7 @@ import java.util.List;
  */
 public class Departamento {
 
-    private String nome;
+    private String nomeDepartamento;
     private int id_departamento;
 
     private Empresa empresa;
@@ -22,18 +22,18 @@ public class Departamento {
     public Departamento() {
     }
 
-    public Departamento(String nome, int id_departamento, Empresa empresa) {
-        this.nome = nome;
+    public Departamento(String nomeDepartamento, int id_departamento, Empresa empresa) {
+        this.nomeDepartamento = nomeDepartamento;
         this.id_departamento = id_departamento;
         this.empresa = empresa;
     }
 
-    public String getNome() {
-        return nome;
+    public String getNomeDepartamento() {
+        return nomeDepartamento;
     }
 
-    public void setNome(String nome) {
-        this.nome = nome;
+    public void setNomeDepartamento(String nomeDepartamento) {
+        this.nomeDepartamento = nomeDepartamento;
     }
 
     public int getId_departamento() {

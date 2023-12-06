@@ -7,72 +7,78 @@ package model.entities;
 import java.util.ArrayList;
 import java.util.List;
 import java.util.Date;
-
+import model.entities.enums.Situacao;
 
 /**
  *
  * @author usuario
  */
 public class Atividade {
-    private String nome;
-    private String descricao; 
-    private Date data_inicio;
-    private Date data_fim;
-    private int porcentagem;
     
+    //Atributos
+    private String nomeAtividade;
+    private String descricaoAtividade;
+    private Date dataInicioAtividade;
+    private Date dataFimAtividade;
+    private int porcentagemAtividade;
+    
+    //Relacionamentos
     private Projeto projeto;
     List<Acao> lista_acoes = new ArrayList<>();
+    
+    //Enums
+    private Situacao situacaoAtividade;
 
     public Atividade() {
     }
 
-    public Atividade(String nome, String descricao, Date data_inicio, Date data_fim, int porcentagem, Projeto projeto) {
-        this.nome = nome;
-        this.descricao = descricao;
-        this.data_inicio = data_inicio;
-        this.data_fim = data_fim;
-        this.porcentagem = porcentagem;
+    public Atividade(String nomeAtividade, String descricaoAtividade, Date dataInicioAtividade, Date dataFimAtividade, int porcentagemAtividade, Projeto projeto) {
+        this.nomeAtividade = nomeAtividade;
+        this.descricaoAtividade = descricaoAtividade;
+        this.dataInicioAtividade = dataInicioAtividade;
+        this.dataFimAtividade = dataFimAtividade;
+        this.porcentagemAtividade = porcentagemAtividade;
         this.projeto = projeto;
     }
 
-    public String getNome() {
-        return nome;
+    public String getNomeAtividade() {
+        return nomeAtividade;
     }
 
-    public void setNome(String nome) {
-        this.nome = nome;
+    public void setNomeAtividade(String nomeAtividade) {
+        this.nomeAtividade = nomeAtividade;
     }
 
-    public String getDescricao() {
-        return descricao;
+    public String getDescricaoAtividade() {
+        return descricaoAtividade;
     }
 
-    public void setDescricao(String descricao) {
-        this.descricao = descricao;
+    public void setDescricaoAtividade(String descricaoAtividade) {
+        this.descricaoAtividade = descricaoAtividade;
     }
 
-    public Date getData_inicio() {
-        return data_inicio;
+    public Date getDataInicioAtividade() {
+        return dataInicioAtividade;
     }
 
-    public void setData_inicio(Date data_inicio) {
-        this.data_inicio = data_inicio;
+    public void setDataInicioAtividade(Date dataInicioAtividade) {
+        this.dataInicioAtividade = dataInicioAtividade;
     }
 
-    public Date getData_fim() {
-        return data_fim;
+    public Date getDataFimAtividade() {
+        return dataFimAtividade;
     }
 
-    public void setData_fim(Date data_fim) {
-        this.data_fim = data_fim;
+    public void setDataFimAtividade(Date dataFimAtividade) {
+        this.dataFimAtividade = dataFimAtividade;
     }
 
-    public int getPorcentagem() {
-        return porcentagem;
+    public int getPorcentagemAtividade() {
+        return porcentagemAtividade;
     }
 
-    public void setPorcentagem(int porcentagem) {
-        this.porcentagem = porcentagem;
+    public void setPorcentagemAtividade(int porcentagemAtividade) {
+        this.porcentagemAtividade = porcentagemAtividade;
     }
 
     public Projeto getProjeto() {
@@ -86,34 +92,119 @@ public class Atividade {
     public List<Acao> getLista_acoes() {
         return lista_acoes;
     }
-    
-    public void addLista_acoes(Acao acao){
+
+    public void addLista_acoes(Acao acao) {
         lista_acoes.add(acao);
-        
+
     }
-    
+
     public void removeLista_acoes(Acao acao) {
         lista_acoes.remove(acao);
     }
-    
-    public String validarData(){
-        if(!data_fim.after(data_inicio)){
+
+    public String validarData() {
+        if (!dataFimAtividade.after(dataInicioAtividade))
+        {
             return "Data do fim não pode ser antes da data de início";
+        }
+        // VERIFICAÇÃO DA DATA INICIO
+        // Verificar os mêses de 31 dias
+        if (dataInicioAtividade.getMonth() == 1
+                || dataInicioAtividade.getMonth() == 3
+                || dataInicioAtividade.getMonth() == 5
+                || dataInicioAtividade.getMonth() == 7
+                || dataInicioAtividade.getMonth() == 8
+                || dataInicioAtividade.getMonth() == 10
+                || dataInicioAtividade.getMonth() == 12)
+        {
+            if (dataInicioAtividade.getDay() < 0 || dataInicioAtividade.getDay() > 31)
+            {
+                return "Data inválida";
+            }
+        }
+        // Verificar os mêses de 30 dias
+        if (dataInicioAtividade.getMonth() == 4
+                || dataInicioAtividade.getMonth() == 6
+                || dataInicioAtividade.getMonth() == 9
+                || dataInicioAtividade.getMonth() == 11)
+        {
+            if (dataInicioAtividade.getDay() < 0 || dataInicioAtividade.getDay() > 30)
+            {
+                return "Data inválida";
+            }
+        }
+        // Verificar expecificamente Fevereiro(Ano bissexto)
+        if (dataInicioAtividade.getMonth() == 2)
+        {
+            if (dataInicioAtividade.getYear() % 4 != 0)
+            {
+                if (dataInicioAtividade.getDay() < 0 || dataInicioAtividade.getDay() > 28)
+                {
+                    return "Data inválida";
+                }
+            }
+            if (dataInicioAtividade.getYear() % 4 == 0)
+            {
+                if (dataInicioAtividade.getDay() < 0 || dataInicioAtividade.getDay() > 29)
+                {
+                    return "Data inválida";
+                }
+            }
+        }
+        // VERIFICACAO DA DATA FIM
+        if (dataFimAtividade.getMonth() == 1
+                || dataFimAtividade.getMonth() == 3
+                || dataFimAtividade.getMonth() == 5
+                || dataFimAtividade.getMonth() == 7
+                || dataFimAtividade.getMonth() == 8
+                || dataFimAtividade.getMonth() == 10
+                || dataFimAtividade.getMonth() == 12)
+        {
+            if (dataFimAtividade.getDay() < 0 || dataFimAtividade.getDay() > 31)
+            {
+                return "Data inválida";
+            }
+        }
+        // Verificar os mêses de 30 dias
+        if (dataFimAtividade.getMonth() == 4
+                || dataFimAtividade.getMonth() == 6
+                || dataFimAtividade.getMonth() == 9
+                || dataFimAtividade.getMonth() == 11)
+        {
+            if (dataFimAtividade.getDay() < 0 || dataFimAtividade.getDay() > 30)
+            {
+                return "Data inválida";
+            }
+        }
+        // Verificar expecificamente Fevereiro(Ano bissexto)
+        if (dataFimAtividade.getMonth() == 2)
+        {
+            if (dataFimAtividade.getYear() % 4 != 0)
+            {
+                if (dataFimAtividade.getDay() < 0 || dataFimAtividade.getDay() > 28)
+                {
+                    return "Data inválida";
+                }
+            }
+            if (dataFimAtividade.getYear() % 4 == 0)
+            {
+                if (dataFimAtividade.getDay() < 0 || dataFimAtividade.getDay() > 29)
+                {
+                    return "Data inválida";
+                }
+            }
         }
         return null;
     }
-    
-    public int definirPorcentagem(){
+
+    public int definirPorcentagem() {
         int porcentagemTotal = 0;
         int cont = 0;
         for (Acao acao : lista_acoes)
         {
-            porcentagemTotal += acao.getPorcentagem();
+            porcentagemTotal += acao.getPorcentagemAcao();
             cont++;
         }
         return porcentagemTotal / cont;
     }
-    
-    
 }
-
